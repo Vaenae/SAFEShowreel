@@ -14,6 +14,7 @@ let deployPath = Path.getFullName "deploy"
 let sharedTestsPath = Path.getFullName "tests/Shared"
 let serverTestsPath = Path.getFullName "tests/Server"
 let clientTestsPath = Path.getFullName "tests/Client"
+let e2eTestsPath = Path.getFullName "tests/E2E"
 
 Target.create "Clean" (fun _ ->
     Shell.cleanDir deployPath
@@ -55,6 +56,10 @@ Target.create "RunTests" (fun _ ->
     [ "server", dotnet "watch run" serverTestsPath
       "client", dotnet "fable watch -o output -s --run webpack-dev-server --config ../../webpack.tests.config.js" clientTestsPath ]
     |> runParallel
+)
+
+Target.create "E2ETests" (fun _ ->
+    run dotnet "run" e2eTestsPath
 )
 
 Target.create "Format" (fun _ ->
